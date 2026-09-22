@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://jlfslyfbhid5"]
+
+[ext_resource type="Script" uid="uid://3wiwikivlh28" path="res://logic/paddle.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dvrb8efddt0aa" path="res://paddle.png" id="2"]
+[ext_resource type="Script" uid="uid://clbdxfb2f7ig8" path="res://logic/ball.gd" id="4"]
+[ext_resource type="Texture2D" uid="uid://clowikjgl4yq1" path="res://ball.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://drgpdyyomyqpl" path="res://separator.png" id="6"]
+[ext_resource type="Script" uid="uid://cyartbqm8mgjq" path="res://logic/wall.gd" id="7"]
+[ext_resource type="Script" uid="uid://bpr06lehoe4d6" path="res://logic/ceiling_floor.gd" id="8"]
+[ext_resource type="Script" uid="uid://e47sxhn6yg7v" path="res://label.gd" id="8_a6iag"]
+[ext_resource type="Script" uid="uid://k4qynufcpi1w" path="res://score.gd" id="9_7860c"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(8, 32)
+
+[sub_resource type="RectangleShape2D" id="2"]
+size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="3"]
+size = Vector2(20, 400)
+
+[sub_resource type="RectangleShape2D" id="4"]
+size = Vector2(640, 20)
+
+[node name="Pong" type="Node2D" unique_id=47837502]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1744185262]
+
+[node name="Label" type="Label" parent="CanvasLayer" unique_id=1002031031]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -226.0
+offset_top = -108.0
+offset_right = 227.0
+offset_bottom = -33.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+text = "Left paddle move with W and S
+Right paddle move with Up or Down arrow
+ts peak game from the earliest times of computer graphics"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("8_a6iag")
+
+[node name="Score" type="Label" parent="CanvasLayer" unique_id=637537173]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -21.5
+offset_right = 21.5
+offset_bottom = 56.0
+grow_horizontal = 2
+text = "0      0"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("9_7860c")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1754737818]
+offset_right = 640.0
+offset_bottom = 400.0
+color = Color(0.141176, 0.152941, 0.164706, 1)
+
+[node name="Left" type="Area2D" parent="." unique_id=1733232017]
+modulate = Color(0, 1, 1, 1)
+position = Vector2(67.6285, 192.594)
+script = ExtResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="Left" unique_id=669046208]
+texture = ExtResource("2")
+
+[node name="Collision" type="CollisionShape2D" parent="Left" unique_id=768457659]
+shape = SubResource("1")
+
+[node name="Right" type="Area2D" parent="." unique_id=914070169]
+modulate = Color(1, 0, 1, 1)
+position = Vector2(563.815, 188.919)
+script = ExtResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="Right" unique_id=2116997352]
+texture = ExtResource("2")
+
+[node name="Collision" type="CollisionShape2D" parent="Right" unique_id=1760246516]
+shape = SubResource("1")
+
+[node name="Ball" type="Area2D" parent="." unique_id=97784009]
+position = Vector2(320.5, 191.124)
+script = ExtResource("4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ball" unique_id=1148950004]
+texture = ExtResource("5")
+
+[node name="Collision" type="CollisionShape2D" parent="Ball" unique_id=908445968]
+shape = SubResource("2")
+
+[node name="Separator" type="Sprite2D" parent="." unique_id=1467010217]
+position = Vector2(320, 200)
+texture = ExtResource("6")
+
+[node name="LeftWall" type="Area2D" parent="." unique_id=677077341 node_paths=PackedStringArray("scoreLabel")]
+position = Vector2(-10, 200)
+script = ExtResource("7")
+scoreLabel = NodePath("../CanvasLayer/Score")
+
+[node name="Collision" type="CollisionShape2D" parent="LeftWall" unique_id=374756196]
+shape = SubResource("3")
+
+[node name="RightWall" type="Area2D" parent="." unique_id=1781797073 node_paths=PackedStringArray("scoreLabel")]
+position = Vector2(650, 200)
+script = ExtResource("7")
+scoreLabel = NodePath("../CanvasLayer/Score")
+
+[node name="Collision" type="CollisionShape2D" parent="RightWall" unique_id=124268485]
+shape = SubResource("3")
+
+[node name="Ceiling" type="Area2D" parent="." unique_id=1552156994]
+position = Vector2(320, -10)
+script = ExtResource("8")
+
+[node name="Collision" type="CollisionShape2D" parent="Ceiling" unique_id=201965031]
+shape = SubResource("4")
+
+[node name="Floor" type="Area2D" parent="." unique_id=1206929525]
+position = Vector2(320, 410)
+script = ExtResource("8")
+_bounce_direction = -1
+
+[node name="Collision" type="CollisionShape2D" parent="Floor" unique_id=1439789484]
+shape = SubResource("4")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1996937339]
+offset = Vector2(320, 200)
+
+[connection signal="area_entered" from="Left" to="Left" method="_on_area_entered"]
+[connection signal="area_entered" from="Right" to="Right" method="_on_area_entered"]
+[connection signal="area_entered" from="LeftWall" to="LeftWall" method="_on_wall_area_entered"]
+[connection signal="area_entered" from="RightWall" to="RightWall" method="_on_wall_area_entered"]
+[connection signal="area_entered" from="Ceiling" to="Ceiling" method="_on_area_entered"]
+[connection signal="area_entered" from="Floor" to="Floor" method="_on_area_entered"]
